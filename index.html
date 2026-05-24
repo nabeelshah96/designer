@@ -7,17 +7,35 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
 
-<!-- Tailwind Play CDN — suppresses the production warning -->
+<!-- Suppress console warnings BEFORE Tailwind loads -->
+<script>
+  (function() {
+    const originalWarn = console.warn;
+    const originalLog = console.log;
+    console.warn = function(...args) {
+      const msg = args[0]?.toString?.() || '';
+      if (msg.includes('cdn.tailwindcss.com') || msg.includes('production')) return;
+      originalWarn.apply(console, args);
+    };
+    console.log = function(...args) {
+      const msg = args[0]?.toString?.() || '';
+      if (msg.includes('cdn.tailwindcss.com') || msg.includes('production')) return;
+      originalLog.apply(console, args);
+    };
+  })();
+</script>
+
+<!-- Tailwind Play CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-  /* Silence the Play CDN build notice */
+  /* Tailwind config */
   if (typeof tailwind !== 'undefined') {
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: { display: ['Syne','sans-serif'], body: ['DM Sans','sans-serif'] }
+          fontFamily: { display: ['Space Grotesk','sans-serif'], body: ['DM Sans','sans-serif'] }
         }
       }
     };
@@ -125,20 +143,30 @@ body::before{
 /* ══════════════════════════════════════════════
    TYPOGRAPHY HELPERS
 ══════════════════════════════════════════════ */
-.font-display{font-family:'Syne',sans-serif}
+.font-display{font-family:'Space Grotesk',sans-serif}
 .hero-heading{
-  font-family:'Syne',sans-serif;font-weight:800;
-  font-size:clamp(3rem,8.5vw,8rem);
-  line-height:.94;letter-spacing:-.03em;
-  background:linear-gradient(135deg,#f5f0ff 0%,#c4b5fd 45%,#a78bfa 100%);
+  font-family:'Space Grotesk',sans-serif;font-weight:800;
+  font-size:clamp(3.4rem,9vw,9.5rem);
+  line-height:.92;letter-spacing:-.01em;
+  background:linear-gradient(135deg,#ffffff 0%,#e2d9ff 35%,#c4b5fd 65%,#a78bfa 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  /* clip-path mask for scroll reveal — driven by GSAP */
+  clip-path:inset(0 0 0 0);
+}
+/* Each word wrapped in a span for word-by-word reveal */
+.hero-word{
+  display:inline-block;vertical-align:bottom;
+}
+.hero-word-inner{
+  display:inline-block;
+  opacity:1; /* Always visible — no effects */
 }
 .section-label{
   font-size:.68rem;font-weight:500;letter-spacing:.22em;
   text-transform:uppercase;color:var(--accent);opacity:.75;
 }
 .section-heading{
-  font-family:'Syne',sans-serif;font-weight:700;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;
   font-size:clamp(1.9rem,4vw,3rem);line-height:1.05;
   letter-spacing:-.02em;color:var(--white);
 }
@@ -158,7 +186,7 @@ body::before{
   border-bottom:1px solid rgba(255,255,255,.06);
 }
 .nav-logo{
-  font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:-.02em;
+  font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:-.02em;
   text-decoration:none;
   background:linear-gradient(90deg,#f5f0ff,#a78bfa);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
@@ -204,7 +232,7 @@ body::before{
 }
 .nav-drawer.open{opacity:1;pointer-events:all}
 .nav-drawer a{
-  font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:700;
+  font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;
   color:rgba(255,255,255,.6);text-decoration:none;letter-spacing:-.01em;
   transition:color .2s;
 }
@@ -249,6 +277,16 @@ body::before{
   display:flex;flex-direction:column;justify-content:flex-end;
   padding:0 5vw 9vh;
   z-index:1;
+}
+.hero-portrait-bg{
+  position:absolute;right:0;top:0;
+  height:100%;width:55%;
+  object-fit:cover;object-position:center left;
+  z-index:0;pointer-events:none;user-select:none;
+  /* filter:grayscale(100%) contrast(1.05); */
+  mix-blend-mode:luminosity;
+  -webkit-mask:linear-gradient(to right,transparent 0%,black 25%,black 100%);
+  mask:linear-gradient(to right,transparent 0%,black 25%,black 100%);
 }
 .hero-grid-line{
   position:absolute;top:0;bottom:0;width:1px;
@@ -325,7 +363,7 @@ body::before{
   border-left:1px solid rgba(139,92,246,.28);
 }
 .stat-num{
-  font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;line-height:1;
+  font-family:'Space Grotesk',sans-serif;font-size:2.5rem;font-weight:800;line-height:1;
   background:linear-gradient(135deg,#f5f0ff,#a78bfa);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
@@ -395,7 +433,7 @@ body::before{
   border-radius:100px;font-size:.67rem;color:var(--accent);
   margin-bottom:.85rem;align-self:flex-start;
 }
-.card-title{font-family:'Syne',sans-serif;font-size:1.45rem;font-weight:700;color:#f5f0ff;line-height:1.1}
+.card-title{font-family:'Space Grotesk',sans-serif;font-size:1.45rem;font-weight:700;color:#f5f0ff;line-height:1.1}
 .card-desc{font-size:.8rem;color:rgba(255,255,255,.48);margin-top:.45rem;line-height:1.55}
 .card-arrow{
   position:absolute;top:1.4rem;right:1.4rem;z-index:3;
@@ -420,7 +458,7 @@ body::before{
   font-size:.7rem;color:var(--muted);letter-spacing:.06em;
   text-transform:uppercase;min-width:64px;padding-top:.1rem;
 }
-.edu-title{font-family:'Syne',sans-serif;font-weight:600;font-size:.93rem;color:var(--white)}
+.edu-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.93rem;color:var(--white)}
 .edu-inst{font-size:.78rem;color:var(--muted);margin-top:.15rem}
 
 /* ══════════════════════════════════════════════
@@ -467,11 +505,88 @@ footer{
 ══════════════════════════════════════════════ */
 @media(max-width:640px){
   #hero{padding:0 1.4rem 8vh}
+  .hero-portrait-bg{width:70%;-webkit-mask:linear-gradient(to right,transparent 0%,black 45%,black 100%);mask:linear-gradient(to right,transparent 0%,black 45%,black 100%)}
   .section-wrap{padding:0 1.4rem}
   .hero-meta{gap:.8rem}
   .scroll-indicator{display:none}
   .gradient-divider{margin:0 1.4rem}
 }
+
+/* ══════════════════════════════════════════════
+   PROJECT MODAL
+══════════════════════════════════════════════ */
+#modal-backdrop{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(5,5,9,.75);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
+  visibility:hidden;opacity:0; /* controlled by GSAP */
+}
+#modal-box{
+  position:relative;
+  width:100%;max-width:720px;max-height:88vh;
+  overflow-y:auto;
+  background:rgba(18,10,40,.92);
+  backdrop-filter:blur(32px) saturate(160%);
+  -webkit-backdrop-filter:blur(32px) saturate(160%);
+  border:1px solid rgba(139,92,246,.22);
+  border-radius:24px;
+  padding:2.5rem;
+  scrollbar-width:thin;scrollbar-color:rgba(139,92,246,.3) transparent;
+}
+#modal-box::-webkit-scrollbar{width:3px}
+#modal-box::-webkit-scrollbar-thumb{background:rgba(139,92,246,.3);border-radius:2px}
+.modal-close{
+  position:absolute;top:1.2rem;right:1.2rem;
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--muted);
+  transition:background .2s,color .2s,transform .2s;
+}
+@media(pointer:fine){.modal-close{cursor:none}}
+.modal-close:hover{background:rgba(139,92,246,.15);color:var(--accent);transform:rotate(90deg)}
+.modal-chip{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.2rem .7rem;
+  background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.22);
+  border-radius:100px;font-size:.68rem;color:var(--accent);letter-spacing:.04em;
+  margin-right:.4rem;margin-bottom:.4rem;
+}
+.modal-skill-tag{
+  display:inline-block;padding:.3rem .8rem;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:100px;font-size:.74rem;color:rgba(255,255,255,.6);
+  margin-right:.4rem;margin-bottom:.4rem;
+  transition:background .2s,border-color .2s,color .2s;
+}
+.modal-skill-tag:hover{background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.28);color:var(--accent)}
+.modal-stat-row{
+  display:flex;align-items:flex-start;gap:.9rem;
+  padding:.85rem 0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.modal-stat-row:last-child{border-bottom:none}
+.modal-stat-icon{
+  width:34px;height:34px;flex-shrink:0;border-radius:10px;
+  background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.2);
+  display:flex;align-items:center;justify-content:center;
+}
+.modal-stat-val{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;
+  background:linear-gradient(90deg,#f5f0ff,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.modal-stat-desc{font-size:.78rem;color:var(--muted);margin-top:.1rem;line-height:1.5}
+.modal-divider{height:1px;background:rgba(255,255,255,.06);margin:1.5rem 0}
+/* Cursor fix for modal */
+@media(pointer:fine){#modal-backdrop *{cursor:none}}
+@media(max-width:768px){
+  .modal-content-grid{grid-template-columns:1fr!important}
+  .stat-block{padding:1rem 1.2rem!important}
+}
+
 </style>
 </head>
 <body>
@@ -522,6 +637,7 @@ footer{
 
 <!-- ═══════════════════════════ HERO ══════════════════════════════ -->
 <section id="hero">
+  <img class="hero-portrait-bg" src="img/background.jpeg" alt="" aria-hidden="true" loading="lazy" decoding="async"/>
   <div class="hero-grid-line" style="left:25%"></div>
   <div class="hero-grid-line" style="left:50%"></div>
   <div class="hero-grid-line" style="left:75%"></div>
@@ -535,7 +651,9 @@ footer{
     </div>
 
     <h1 class="hero-heading" id="h-title" style="margin-bottom:1rem">
-      Muhammad<br/>Nabeel Shah
+      <span class="hero-word"><span class="hero-word-inner">Muhammad</span></span><br/>
+      <span class="hero-word"><span class="hero-word-inner">Nabeel</span></span>
+      <span class="hero-word"><span class="hero-word-inner">Shah</span></span>
     </h1>
 
     <div id="h-sub" style="margin-bottom:2.2rem">
@@ -594,46 +712,95 @@ footer{
 <!-- ═══════════════════════════ ABOUT ═════════════════════════════ -->
 <section id="about" class="reveal-section" style="padding:7rem 0;position:relative;z-index:1">
   <div class="section-wrap">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start" class="about-grid">
-      <!-- Left -->
+    <p class="section-label" style="margin-bottom:1rem">About Me</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start;margin-bottom:3rem" class="about-grid">
+      <!-- Left: Heading + Description -->
       <div>
-        <p class="section-label" style="margin-bottom:1rem">About Me</p>
         <h2 class="section-heading" style="margin-bottom:2rem">Designing systems<br/>that think ahead</h2>
-        <p style="color:var(--muted);font-size:.93rem;line-height:1.82;max-width:500px;margin-bottom:1rem">
+        <p style="color:var(--muted);font-size:.93rem;line-height:1.82;margin-bottom:1rem">
           With 9+ years specializing in complex B2B ecosystems, I architect entire product universes — from multi-tenant ERP dashboards to IoT access control interfaces — translating intricate business logic into interfaces that feel inevitable.
         </p>
-        <p style="color:var(--muted);font-size:.93rem;line-height:1.82;max-width:500px;margin-bottom:2rem">
+        <p style="color:var(--muted);font-size:.93rem;line-height:1.82">
           I've digitized manual real estate workflows for the UAE market, reducing office visits and streamlining payment cycles through end-to-end automation design across resident apps, admin portals, and technician tools.
         </p>
-        <div style="display:flex;flex-wrap:wrap;gap:.55rem">
-          <span class="skill-pill">Figma</span><span class="skill-pill">Framer</span>
-          <span class="skill-pill">Sketch</span><span class="skill-pill">Zeplin</span>
-          <span class="skill-pill">HTML/CSS</span><span class="skill-pill">Lottie</span>
-          <span class="skill-pill">Design Systems</span><span class="skill-pill">User Research</span>
-          <span class="skill-pill">Information Architecture</span><span class="skill-pill">Data Visualization</span>
-          <span class="skill-pill">Prototyping</span><span class="skill-pill">Brand Guidelines</span>
-        </div>
       </div>
 
-      <!-- Right: stat card -->
-      <div>
-        <div class="glass" style="padding:1.5rem">
-          <div style="display:grid;grid-template-columns:1fr 1fr">
-            <div class="stat-block"><div class="stat-num" data-count="9" data-suffix="+">9+</div><div class="stat-label">Years Experience</div></div>
-            <div class="stat-block"><div class="stat-num" data-count="3" data-suffix="">3</div><div class="stat-label">Core Ecosystems</div></div>
-            <div class="stat-block" style="border-top:1px solid rgba(255,255,255,.05)"><div class="stat-num" data-count="50" data-suffix="+">50+</div><div class="stat-label">Modules Designed</div></div>
-            <div class="stat-block" style="border-top:1px solid rgba(255,255,255,.05)"><div class="stat-num" style="-webkit-text-fill-color:var(--accent);background:none">UAE</div><div class="stat-label">Market Specialist</div></div>
+      <!-- Right: Abstract 3D visual card -->
+      <div style="margin-top:1.5rem;">
+        <div class="about-visual-card" style="position:relative;border-radius:24px;overflow:hidden;height:320px;background:linear-gradient(135deg,#0d0527 0%,#160840 50%,#1f0a55 100%);border:1px solid rgba(139,92,246,.18)">
+          <!-- Animated SVG geometry -->
+          <svg class="about-svg-anim" style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 480 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <!-- outer ring -->
+            <circle cx="240" cy="130" r="100" fill="none" stroke="rgba(139,92,246,.18)" stroke-width="1" stroke-dasharray="6 5"/>
+            <!-- mid ring -->
+            <circle cx="240" cy="130" r="68" fill="none" stroke="rgba(167,139,250,.12)" stroke-width="1"/>
+            <!-- inner glow sphere -->
+            <radialGradient id="sphereGrad" cx="42%" cy="38%" r="58%">
+              <stop offset="0%" stop-color="rgba(196,181,253,.55)"/>
+              <stop offset="55%" stop-color="rgba(139,92,246,.25)"/>
+              <stop offset="100%" stop-color="rgba(109,40,217,.0)"/>
+            </radialGradient>
+            <circle cx="240" cy="130" r="44" fill="url(#sphereGrad)"/>
+            <!-- orbit dots -->
+            <circle cx="340" cy="130" r="5" fill="rgba(196,181,253,.7)"/>
+            <circle cx="240" cy="30"  r="4" fill="rgba(139,92,246,.7)"/>
+            <circle cx="152" cy="172" r="3.5" fill="rgba(167,139,250,.55)"/>
+            <circle cx="280" cy="198" r="3" fill="rgba(196,181,253,.4)"/>
+            <!-- grid lines -->
+            <line x1="0"   y1="130" x2="480" y2="130" stroke="rgba(139,92,246,.07)" stroke-width="1"/>
+            <line x1="240" y1="0"   x2="240" y2="260" stroke="rgba(139,92,246,.07)" stroke-width="1"/>
+            <!-- corner bracket decoration -->
+            <path d="M24 40 L24 24 L40 24" fill="none" stroke="rgba(167,139,250,.35)" stroke-width="1.5"/>
+            <path d="M456 40 L456 24 L440 24" fill="none" stroke="rgba(167,139,250,.35)" stroke-width="1.5"/>
+            <path d="M24 220 L24 236 L40 236" fill="none" stroke="rgba(167,139,250,.35)" stroke-width="1.5"/>
+            <path d="M456 220 L456 236 L440 236" fill="none" stroke="rgba(167,139,250,.35)" stroke-width="1.5"/>
+          </svg>
+          <!-- glass overlay label -->
+          <div style="position:absolute;bottom:1.2rem;left:1.2rem;right:1.2rem;background:rgba(255,255,255,.04);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:.8rem 1rem;display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;color:var(--white)">9+ Years of Craft</p>
+              <p style="font-size:.72rem;color:var(--muted);margin-top:.1rem">B2B · SaaS · PropTech</p>
+            </div>
+            <div style="width:36px;height:36px;border-radius:50%;background:rgba(139,92,246,.2);border:1px solid rgba(139,92,246,.3);display:flex;align-items:center;justify-content:center">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.87L12 17.77l-6.18 3.24L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            </div>
           </div>
-          <div style="margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid rgba(255,255,255,.05)">
-            <p class="section-label" style="margin-bottom:.7rem">Currently at</p>
-            <div style="display:flex;align-items:center;gap:.9rem">
-              <div style="width:40px;height:40px;border-radius:12px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.22);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent)"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
-              </div>
-              <div>
-                <p style="font-family:'Syne',sans-serif;font-weight:600;font-size:.88rem;color:var(--white)">Appcom Solutions Technologies</p>
-                <p style="font-size:.73rem;color:var(--muted)">Lead Product Designer · Oct 2022 – Present</p>
-              </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Skills pills below both columns -->
+    <div>
+      <p class="section-label" style="margin-bottom:1rem">Skills &amp; Tools</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.55rem">
+        <span class="skill-pill">Figma</span><span class="skill-pill">Framer</span>
+        <span class="skill-pill">Sketch</span><span class="skill-pill">Zeplin</span>
+        <span class="skill-pill">HTML/CSS</span><span class="skill-pill">Lottie</span>
+        <span class="skill-pill">Design Systems</span><span class="skill-pill">User Research</span>
+        <span class="skill-pill">Information Architecture</span><span class="skill-pill">Data Visualization</span>
+        <span class="skill-pill">Prototyping</span><span class="skill-pill">Brand Guidelines</span>
+      </div>
+    </div>
+
+    <!-- Stats grid below skills -->
+    <div style="margin-top:3rem">
+      <div class="glass" style="padding:1.2rem 0">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0">
+          <div class="stat-block"><div class="stat-num" data-count="9" data-suffix="+">9+</div><div class="stat-label">Years Experience</div></div>
+          <div class="stat-block"><div class="stat-num" data-count="3" data-suffix="">3</div><div class="stat-label">Core Ecosystems</div></div>
+          <div class="stat-block"><div class="stat-num" data-count="50" data-suffix="+">50+</div><div class="stat-label">Modules Designed</div></div>
+          <div class="stat-block"><div class="stat-num" style="-webkit-text-fill-color:var(--accent);background:none">UAE</div><div class="stat-label">Market Specialist</div></div>
+        </div>
+        <div style="padding:1.1rem 1.7rem 0;margin-top:1rem;border-top:1px solid rgba(255,255,255,.05)">
+          <p class="section-label" style="margin-bottom:.65rem">Currently at</p>
+          <div style="display:flex;align-items:center;gap:.8rem">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.22);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent)"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+            </div>
+            <div>
+              <p style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.85rem;color:var(--white)">Appcom Solutions Technologies</p>
+              <p style="font-size:.71rem;color:var(--muted)">Lead Product Designer · Oct 2022 – Present</p>
             </div>
           </div>
         </div>
@@ -660,17 +827,17 @@ footer{
           <span class="exp-tag">Oct 2022 – Present</span>
           <span class="exp-tag" style="background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.22);color:#6ee7b7">Current Role</span>
         </div>
-        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--white);margin-bottom:.3rem">Lead Product Designer (UI/UX)</h3>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.2rem;color:var(--white);margin-bottom:.3rem">Lead Product Designer (UI/UX)</h3>
         <p style="font-size:.83rem;color:var(--accent);margin-bottom:1.4rem">Appcom Solutions Technologies · Dubai, UAE</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.9rem" class="exp-grid">
           <div class="glass" style="padding:1.2rem 1.4rem">
             <p class="section-label" style="margin-bottom:.5rem">Core Product</p>
-            <p style="font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;color:var(--white);margin-bottom:.5rem">Elite Interact</p>
+            <p style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.95rem;color:var(--white);margin-bottom:.5rem">Elite Interact</p>
             <p style="font-size:.8rem;color:var(--muted);line-height:1.65">Multi-platform property management ecosystem — Resident App, Admin Portal, Technician App, IoT access cards — automating the full Maintenance-to-Payment lifecycle.</p>
           </div>
           <div class="glass" style="padding:1.2rem 1.4rem">
             <p class="section-label" style="margin-bottom:.5rem">Core Product</p>
-            <p style="font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;color:var(--white);margin-bottom:.5rem">AccyCloud</p>
+            <p style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.95rem;color:var(--white);margin-bottom:.5rem">AccyCloud</p>
             <p style="font-size:.8rem;color:var(--muted);line-height:1.65">Context-aware POS &amp; cloud accounting with VAT compliance modules, adaptive device layouts, and modular P&amp;L / stock / staff performance tracking.</p>
           </div>
         </div>
@@ -683,11 +850,11 @@ footer{
           <span class="exp-tag">Nov 2016 – Oct 2022</span>
           <span class="exp-tag">6 Years</span>
         </div>
-        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--white);margin-bottom:.3rem">UI/UX Designer</h3>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.2rem;color:var(--white);margin-bottom:.3rem">UI/UX Designer</h3>
         <p style="font-size:.83rem;color:var(--accent);margin-bottom:1.4rem">Appcom Solutions Technologies · Dubai, UAE</p>
         <div class="glass" style="padding:1.2rem 1.4rem;max-width:520px">
           <p class="section-label" style="margin-bottom:.5rem">Core Project</p>
-          <p style="font-family:'Syne',sans-serif;font-weight:600;font-size:.95rem;color:var(--white);margin-bottom:.5rem">Swoop Car Wash</p>
+          <p style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.95rem;color:var(--white);margin-bottom:.5rem">Swoop Car Wash</p>
           <p style="font-size:.8rem;color:var(--muted);line-height:1.65">Three-tier subscription marketplace — Resident App, Field-Staff App, Admin Portal — with plan customization, real-time usage tracking, and automated workload rebalancing.</p>
         </div>
       </div>
@@ -698,7 +865,7 @@ footer{
         <div style="display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:.75rem">
           <span class="exp-tag">Aug 2015 – Oct 2016</span>
         </div>
-        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--white);margin-bottom:.3rem">Web &amp; Graphics Designer</h3>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.2rem;color:var(--white);margin-bottom:.3rem">Web &amp; Graphics Designer</h3>
         <p style="font-size:.83rem;color:var(--accent);margin-bottom:.9rem">Shop2Door IT Solutions</p>
         <p style="font-size:.83rem;color:var(--muted);line-height:1.75;max-width:500px">Designed brand identities and responsive websites for Real Estate, Automotive Auction, E-Learning, and Tourism industries. Delivered coded frontends in HTML, CSS &amp; jQuery.</p>
       </div>
@@ -718,8 +885,8 @@ footer{
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem" class="cards-grid">
 
       <!-- Elite Interact (wide) -->
-      <div class="project-card" style="height:400px;grid-column:span 2">
-        <div class="card-bg" style="background:linear-gradient(135deg,#0f0529 0%,#1a0550 40%,#2e0b7a 70%,#1a0550 100%)">
+      <div class="project-card" style="height:400px;grid-column:span 2" data-modal="elite">
+        <div class="card-bg" style="background:linear-gradient(135deg,rgba(15,5,41,.85) 0%,rgba(26,5,80,.85) 100%),url('img/project-1-thumb.png');background-size:cover;background-position:center">
           <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.22" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
             <rect x="490" y="40" width="270" height="320" rx="18" fill="none" stroke="rgba(167,139,250,.4)" stroke-width="1.5"/>
             <rect x="506" y="68" width="238" height="28" rx="6" fill="rgba(139,92,246,.22)"/>
@@ -745,8 +912,8 @@ footer{
       </div>
 
       <!-- AccyCloud -->
-      <div class="project-card" style="height:400px">
-        <div class="card-bg" style="background:linear-gradient(160deg,#07071a 0%,#0d0530 50%,#1a0a40 100%)">
+      <div class="project-card" style="height:400px" data-modal="accy">
+        <div class="card-bg" style="background:linear-gradient(160deg,rgba(7,7,26,.85) 0%,rgba(26,10,64,.85) 100%),url('img/project-2-thumb.png');background-size:cover;background-position:center">
           <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.3" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
             <rect x="30" y="50" width="340" height="190" rx="14" fill="none" stroke="rgba(167,139,250,.3)" stroke-width="1"/>
             <rect x="48" y="78" width="96" height="9" rx="3" fill="rgba(167,139,250,.2)"/>
@@ -771,8 +938,8 @@ footer{
       </div>
 
       <!-- Swoop -->
-      <div class="project-card" style="height:320px">
-        <div class="card-bg" style="background:linear-gradient(150deg,#08051e 0%,#120840 60%,#1f0a5a 100%)">
+      <div class="project-card" style="height:320px" data-modal="swoop">
+        <div class="card-bg" style="background:linear-gradient(150deg,rgba(8,5,30,.85) 0%,rgba(31,10,90,.85) 100%),url('img/project-3-thumb.png');background-size:cover;background-position:center">
           <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.28" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
             <circle cx="200" cy="140" r="88" fill="none" stroke="rgba(139,92,246,.3)" stroke-width="1.5" stroke-dasharray="8 6"/>
             <circle cx="200" cy="140" r="58" fill="none" stroke="rgba(167,139,250,.2)" stroke-width="1"/>
@@ -792,8 +959,8 @@ footer{
       </div>
 
       <!-- Brand & Web (wide) -->
-      <div class="project-card" style="height:320px;grid-column:span 2">
-        <div class="card-bg" style="background:linear-gradient(120deg,#050516 0%,#0c0840 50%,#160a50 100%)">
+      <div class="project-card" style="height:320px;grid-column:span 2" data-modal="brand">
+        <div class="card-bg" style="background:linear-gradient(120deg,rgba(5,5,22,.85) 0%,rgba(22,10,80,.85) 100%),url('img/project-4-thumb.png');background-size:cover;background-position:center">
           <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.2" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
             <line x1="0" y1="107" x2="800" y2="107" stroke="rgba(139,92,246,.16)" stroke-width="1"/>
             <line x1="0" y1="214" x2="800" y2="214" stroke="rgba(139,92,246,.16)" stroke-width="1"/>
@@ -872,6 +1039,19 @@ footer{
     </div>
   </div>
 </section>
+
+
+<!-- ═══════════════════════════ PROJECT MODAL ═══════════════════ -->
+<div id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div id="modal-box">
+    <button class="modal-close" id="modal-close-btn" aria-label="Close modal">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+
+    <!-- Dynamic content injected by JS -->
+    <div id="modal-content"></div>
+  </div>
+</div>
 
 <footer>
   <p>© 2025 Muhammad Nabeel Shah · Lead Product Designer · Dubai, UAE</p>
@@ -972,21 +1152,27 @@ footer{
   });
 
   /* ─── 6. Hero entrance ───────────────────────────── */
-  // Set initial states
-  gsap.set(['#h-pill','#h-title','#h-sub','#h-meta','.scroll-indicator'],
-           { autoAlpha: 0, y: 32 });
-  gsap.set('.hero-grid-line', { scaleY: 0, transformOrigin: 'top center' });
-  gsap.set('.orb', { autoAlpha: 0 });
+  gsap.set(['#h-pill','#h-sub','#h-meta','.scroll-indicator'], { autoAlpha:0, y:28 });
+  gsap.set('#h-title', { autoAlpha:1 }); // Ensure heading container is visible
+  // Initial hero states
+  const heroWords = document.querySelectorAll('.hero-word-inner');
+  if (heroWords.length === 0) {
+    console.error('Hero word elements not found!');
+  }
+  // Hero words are visible by default (CSS fallback). GSAP animates them in from hidden as an enhancement.
+  gsap.set('.hero-grid-line',  { scaleY:0, transformOrigin:'top center' });
+  gsap.set('.orb',             { autoAlpha:0 });
 
-  const heroTL = gsap.timeline({ delay: 0.25 });
+  const heroTL = gsap.timeline({ delay: 0.3 });
   heroTL
-    .to('#h-pill',           { autoAlpha:1, y:0, duration:.65, ease:'power3.out' })
-    .to('#h-title',          { autoAlpha:1, y:0, duration:.85, ease:'power3.out' }, '-=0.35')
-    .to('#h-sub',            { autoAlpha:1, y:0, duration:.65, ease:'power3.out' }, '-=0.45')
-    .to('#h-meta',           { autoAlpha:1, y:0, duration:.55, ease:'power3.out' }, '-=0.35')
-    .to('.scroll-indicator', { autoAlpha:1, y:0, duration:.5,  ease:'power3.out' }, '-=0.25')
-    .to('.hero-grid-line',   { scaleY:1, duration:1.1, ease:'power3.inOut', stagger:.12 }, 0.3)
-    .to('.orb',              { autoAlpha:1, duration:1.4, stagger:.18, ease:'power2.out'  }, 0.1);
+    .to('#h-pill',           { autoAlpha:1, y:0, duration:.6,  ease:'power3.out' })
+    .to('#h-sub',            { autoAlpha:1, y:0, duration:.6,  ease:'power3.out' }, '-=0.2')
+    .to('#h-meta',           { autoAlpha:1, y:0, duration:.5,  ease:'power3.out' }, '-=0.3')
+    .to('.scroll-indicator', { autoAlpha:1, y:0, duration:.45, ease:'power3.out' }, '-=0.2')
+    .to('.hero-grid-line',   { scaleY:1, duration:1.1, ease:'power3.inOut', stagger:{ amount:0.35 } }, 0.25)
+    .to('.orb',              { autoAlpha:1, duration:1.4, stagger:{ amount:0.5 }, ease:'power2.out'  }, 0.05);
+
+  // Scroll mask effect removed per user request
 
   /* ─── 7. Scroll reveal helper ─────────────────────── */
   // autoAlpha handles both opacity AND visibility safely
@@ -1017,15 +1203,15 @@ footer{
   reveal('.section-heading', { y: 30 }, { duration: .75 });
 
   // About text paragraphs
-  reveal('#about p', { y: 24 }, { duration: .65, staggerDelay: 0.07 });
+  reveal('#about p', { y: 24 }, { duration: .65 });
   // Skill pills
-  reveal('.skill-pill', { y: 16, scale: .92 }, { duration: .45, staggerDelay: 0.03 });
+  reveal('.skill-pill', { y: 16, scale: .92 }, { duration: .45 });
 
   // Stat blocks
-  reveal('.stat-block', { y: 20, scale: .95 }, { duration: .6, staggerDelay: 0.08 });
+  reveal('.stat-block', { y: 20, scale: .95 }, { duration: .6 });
 
   // Glass cards inside about / experience
-  reveal('.glass', { y: 28, scale: .96 }, { duration: .7, staggerDelay: 0.06 });
+  reveal('.glass', { y: 28, scale: .96 }, { duration: .7 });
 
   // Timeline items slide from left
   gsap.utils.toArray('.timeline-item').forEach((item, i) => {
@@ -1108,11 +1294,183 @@ footer{
   gsap.to('.orb-2', { y: -50, ease:'none', scrollTrigger:{ scrub:2.2 } });
   gsap.to('.orb-3', { y: -35, ease:'none', scrollTrigger:{ scrub:1.2 } });
 
-  /* ─── 11. Parallax hero heading ─────────────────── */
-  gsap.to('#h-title', {
-    y: -40, ease: 'none',
-    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1 }
+  /* ─── 11. Hero subtitle parallax (pill + sub drift up gently) ─── */
+  gsap.to('#h-sub', {
+    y: -30, ease: 'none',
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.2 }
   });
+  gsap.to('#h-pill', {
+    y: -20, ease: 'none',
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1.5 }
+  });
+
+
+  /* ═══════════════════════════════════════════════════
+     PROJECT MODAL SYSTEM
+  ═══════════════════════════════════════════════════ */
+  const PROJECTS = {
+    elite: {
+      imgFile: 'project-1-info.png',
+      behanceUrl: 'https://www.behance.net/gallery/your-elite-interact-project',
+      chip: 'PropTech · ERP · IoT',
+      title: 'Elite Interact',
+      subtitle: 'Property Management Ecosystem',
+      desc: `Elite Interact is a fully integrated, multi-platform property management ecosystem designed to digitize and automate the entire building management lifecycle for the UAE real estate market. The system spans four interconnected platforms — a Resident App, an Admin Portal, a Technician App, and a Manager Dashboard — all sharing a single design system and real-time data layer.
+
+The core workflow automation bridges the gap between resident requests and physical resolution: tenants submit maintenance tickets via the app, which route to technicians, trigger inventory checks, and feed into automated invoicing — eliminating manual phone calls and office visits entirely.`,
+      stats: [
+        { icon: '↓', val: '~60%', desc: 'Reduction in manual office visits after launch of the self-service resident portal' },
+        { icon: '⚡', val: '3×',   desc: 'Faster payment cycle speed via in-app payment gateway vs previous manual invoicing' },
+        { icon: '🔒', val: '100%', desc: 'Access card sync accuracy achieved by IoT-contract validity automation, eliminating manual security overhead' },
+        { icon: '📦', val: '40%',  desc: 'Improvement in stock reliability through automated inventory triggers on maintenance tickets' },
+      ],
+      skills: ['UI/UX Design','Information Architecture','ERP Dashboard','Workflow Automation','IoT Interface','Design Systems','Figma','User Research','Data Visualization'],
+    },
+    accy: {
+      imgFile: 'project-2-info.png',
+      behanceUrl: 'https://www.behance.net/gallery/your-accycloud-project',
+      chip: 'Accounting · POS · SaaS',
+      title: 'AccyCloud',
+      subtitle: 'Cloud-based Accounting & POS Platform',
+      desc: `AccyCloud is a modular, cloud-first accounting and point-of-sale platform engineered for the UAE SME market. The most critical design challenge was creating a single interface that performs optimally across wildly different contexts: a fast-paced retail counter on a tablet versus a detailed month-end reconciliation on a desktop.
+
+The solution was a context-aware adaptive layout engine — the UI reads device type and screen size to reconfigure itself, prioritising large touch targets and one-tap actions on mobile while surfacing dense data tables and multi-column views on desktop. The VAT compliance module was built during the UAE's 2018 VAT rollout, giving SMEs a single tool to meet regulatory obligations without third-party accountants.`,
+      stats: [
+        { icon: '✓', val: '100%', desc: 'UAE VAT compliance coverage across all transaction types at launch' },
+        { icon: '↑', val: '2 platforms', desc: 'Single codebase UX architecture serving both tablet POS and desktop accounting workflows' },
+        { icon: '📊', val: '6 modules', desc: 'Comprehensive modules: P&L, Stock, Employee Sales, VAT, Payroll, and Reporting' },
+        { icon: '⚡', val: '~35%', desc: 'Reduction in data-entry errors via inline validation and smart field auto-complete' },
+      ],
+      skills: ['UI/UX Design','Adaptive UX','SaaS Design','Data Visualization','Workflow Automation','Figma','Responsive Design','VAT Compliance UX'],
+    },
+    swoop: {
+      imgFile: 'project-3-info.png',
+      behanceUrl: 'https://www.behance.net/gallery/your-swoop-project',
+      chip: 'Marketplace · Subscription',
+      title: 'Swoop Car Wash',
+      subtitle: 'Subscription-based Service Marketplace',
+      desc: `Swoop is a three-tier digital marketplace that brings on-demand car washing to residential communities across the UAE. The platform required simultaneous design of three distinct user experiences — each with completely different goals, contexts, and mental models.
+
+Residents needed a frictionless subscription flow with clear plan customization (vehicle type × frequency) and real-time wash-count tracking. Field staff needed a distraction-free task list optimized for outdoor use with gloves. Admins needed a control centre for staff scheduling, leave management, and daily workload rebalancing.`,
+      stats: [
+        { icon: '↑', val: '3 apps', desc: 'Three distinct UX platforms designed and shipped as one coherent ecosystem' },
+        { icon: '⚡', val: '~50%', desc: 'Reduction in scheduling conflicts via the automated re-assignment engine for staff leave' },
+        { icon: '📱', val: 'Real-time', desc: 'Live wash-count tracking visible to residents, reducing support queries about plan usage' },
+        { icon: '✓', val: '2 vehicle types', desc: 'Flexible subscription model supporting Sedan and SUV tiers with per-frequency pricing' },
+      ],
+      skills: ['UI/UX Design','Subscription UX','Multi-platform Design','Figma','Sketch','Operational Workflow','Data Visualization','Mobile-first Design'],
+    },
+    brand: {
+      imgFile: 'project-4-info.png',
+      behanceUrl: 'https://www.behance.net/gallery/your-brand-projects',
+      chip: 'Brand Identity · E-Commerce · Portals',
+      title: 'Brand & Web Design',
+      subtitle: 'Identity Systems & Responsive Web',
+      desc: `A collection of brand identity systems and responsive web projects delivered for clients across high-stakes industries in Pakistan and the UAE — Real Estate, Automotive Auctions, E-Learning, and Tourism.
+
+Each project required a full-stack design approach: visual identity (logos, colour systems, typography), digital design (web UI), and frontend implementation (HTML, CSS, jQuery). The e-commerce and auction platforms required careful information architecture to handle large product catalogues, while the tourism portal prioritised intuitive navigation through complex multi-level content.`,
+      stats: [
+        { icon: '🎨', val: '5+', desc: 'Complete brand identity systems designed from strategy to production-ready assets' },
+        { icon: '💻', val: '8+', desc: 'Responsive websites designed and coded across Real Estate, Automotive, and E-Learning sectors' },
+        { icon: '📱', val: '100%', desc: 'Mobile-compatible layouts delivered via semantic HTML, CSS, and jQuery integrations' },
+        { icon: '🌐', val: '1 portal', desc: 'Tourism industry portal with multi-level information architecture and complex navigation' },
+      ],
+      skills: ['Brand Identity','Logo Design','Web Design','HTML/CSS','jQuery','Information Architecture','Responsive Design','E-Commerce UX'],
+    },
+  };
+
+  const backdrop  = document.getElementById('modal-backdrop');
+  const modalBox  = document.getElementById('modal-box');
+  const modalContent = document.getElementById('modal-content');
+  const closeBtn  = document.getElementById('modal-close-btn');
+
+  let modalOpen = false;
+
+  function buildModalHTML(p) {
+    const statsHTML = p.stats.map(s => `
+      <div class="modal-stat-row">
+        <div class="modal-stat-icon">
+          <span style="font-size:.9rem">${s.icon}</span>
+        </div>
+        <div>
+          <div class="modal-stat-val">${s.val}</div>
+          <div class="modal-stat-desc">${s.desc}</div>
+        </div>
+      </div>`).join('');
+
+    const skillsHTML = p.skills.map(s =>
+      `<span class="modal-skill-tag">${s}</span>`).join('');
+
+    return `
+      <div style="margin-bottom:1.5rem">
+        <span class="modal-chip">${p.chip}</span>
+      </div>
+      <h2 id="modal-title" style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.05;letter-spacing:-.02em;color:var(--white);margin-bottom:.4rem">${p.title}</h2>
+      <p style="font-size:.83rem;color:var(--accent);margin-bottom:1.6rem;letter-spacing:.03em">${p.subtitle}</p>
+
+      <p style="font-size:.88rem;color:var(--muted);line-height:1.82;white-space:pre-line">${p.desc}</p>
+
+      <div class="modal-divider"></div>
+
+      <!-- Impact & Stats -->
+      <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);opacity:.8;margin-bottom:1rem">Impact &amp; Stats</p>
+      <div>${statsHTML}</div>
+
+      <div class="modal-divider"></div>
+
+      <!-- Skills -->
+      <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);opacity:.8;margin-bottom:.8rem">Skills &amp; Tools</p>
+      <div style="display:flex;flex-wrap:wrap">${skillsHTML}</div>
+    `;
+  }
+
+  function openModal(key) {
+    const p = PROJECTS[key];
+    if (!p || modalOpen) return;
+    modalOpen = true;
+    modalContent.innerHTML = buildModalHTML(p);
+    modalBox.scrollTop = 0;
+
+    // Ensure cursor hover works for new modal elements
+    if (window.matchMedia('(pointer:fine)').matches) {
+      modalBox.querySelectorAll('button,.modal-skill-tag').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+    }
+
+    lenis.stop();
+
+    const tl = gsap.timeline();
+    tl.set(backdrop, { visibility:'visible' })
+      .to(backdrop, { opacity:1, duration:.3, ease:'power2.out' })
+      .fromTo(modalBox,
+        { opacity:0, y:40, scale:.97 },
+        { opacity:1, y:0,  scale:1,  duration:.45, ease:'power3.out' },
+        '-=0.1'
+      );
+  }
+
+  function closeModal() {
+    if (!modalOpen) return;
+    const tl = gsap.timeline({ onComplete: () => {
+      modalOpen = false;
+      gsap.set(backdrop, { visibility:'hidden' });
+      lenis.start();
+    }});
+    tl.to(modalBox,   { opacity:0, y:24, scale:.97, duration:.3, ease:'power2.in' })
+      .to(backdrop,   { opacity:0, duration:.25, ease:'power2.in' }, '-=0.1');
+  }
+
+  // Open on card click
+  document.querySelectorAll('.project-card[data-modal]').forEach(card => {
+    card.addEventListener('click', () => openModal(card.dataset.modal));
+  });
+
+  // Close on button, backdrop click, Escape key
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
   /* ─── 12. ScrollTrigger refresh after load ───────── */
   window.addEventListener('load', () => {
