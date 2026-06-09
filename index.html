@@ -274,19 +274,8 @@ body::before{
 #hero{
   position:relative;overflow:hidden;
   min-height:100vh;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  padding:0 5vw 9vh;
+  display:flex;flex-direction:column;
   z-index:1;
-}
-.hero-portrait-bg{
-  position:absolute;right:0;top:0;
-  height:100%;width:55%;
-  object-fit:cover;object-position:center left;
-  z-index:0;pointer-events:none;user-select:none;
-  /* filter:grayscale(100%) contrast(1.05); */
-  mix-blend-mode:luminosity;
-  -webkit-mask:linear-gradient(to right,transparent 0%,black 25%,black 100%);
-  mask:linear-gradient(to right,transparent 0%,black 25%,black 100%);
 }
 .hero-grid-line{
   position:absolute;top:0;bottom:0;width:1px;
@@ -315,7 +304,7 @@ body::before{
 }
 .hero-meta span{display:flex;align-items:center;gap:.4rem}
 .scroll-indicator{
-  position:absolute;bottom:2.4rem;right:5vw;
+  position:absolute;bottom:2.4rem;
   display:flex;flex-direction:column;align-items:center;gap:.5rem;
   font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
 }
@@ -504,11 +493,7 @@ footer{
    MOBILE TWEAKS
 ══════════════════════════════════════════════ */
 @media(max-width:640px){
-  #hero{padding:0 1.4rem 8vh}
-  .hero-portrait-bg{width:70%;-webkit-mask:linear-gradient(to right,transparent 0%,black 45%,black 100%);mask:linear-gradient(to right,transparent 0%,black 45%,black 100%)}
   .section-wrap{padding:0 1.4rem}
-  .hero-meta{gap:.8rem}
-  .scroll-indicator{display:none}
   .gradient-divider{margin:0 1.4rem}
 }
 
@@ -525,7 +510,7 @@ footer{
 }
 #modal-box{
   position:relative;
-  width:100%;max-width:720px;max-height:88vh;
+  width:100%;max-width:720px;min-height:0;max-height:88vh;
   overflow-y:auto;
   background:rgba(18,10,40,.92);
   backdrop-filter:blur(32px) saturate(160%);
@@ -580,14 +565,24 @@ footer{
 }
 .modal-stat-desc{font-size:.78rem;color:var(--muted);margin-top:.1rem;line-height:1.5}
 .modal-divider{height:1px;background:rgba(255,255,255,.06);margin:1.5rem 0}
+.modal-hero-img{
+  width:100%;display:block;border-radius:16px;
+  margin-bottom:1.5rem;border:1px solid rgba(139,92,246,.2);
+  object-fit:cover;aspect-ratio:16/9;
+}
+.modal-actions{margin-top:1.75rem}
 /* Cursor fix for modal */
 @media(pointer:fine){#modal-backdrop *{cursor:none}}
 @media(max-width:768px){
   .modal-content-grid{grid-template-columns:1fr!important}
-  .stat-block{padding:1rem 1.2rem!important}
 }
 
 </style>
+
+<link rel="stylesheet" href="style.css"/>
+
+<!-- tsParticles slim bundle -->
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/slim@3/tsparticles.slim.bundle.min.js" defer></script>
 </head>
 <body>
 
@@ -637,27 +632,27 @@ footer{
 
 <!-- ═══════════════════════════ HERO ══════════════════════════════ -->
 <section id="hero">
-  <img class="hero-portrait-bg" src="background.jpeg" alt="" aria-hidden="true" loading="lazy" decoding="async"/>
+  <div id="tsparticles" aria-hidden="true"></div>
   <div class="hero-grid-line" style="left:25%"></div>
   <div class="hero-grid-line" style="left:50%"></div>
   <div class="hero-grid-line" style="left:75%"></div>
 
-  <div style="position:relative;z-index:2;max-width:1180px;margin:0 auto;width:100%">
-    <div style="margin-bottom:1.5rem" id="h-pill">
+  <div class="hero-content">
+    <div id="h-pill">
       <span class="status-pill">
         <span class="status-dot"></span>
         Available for new opportunities · Dubai, UAE
       </span>
     </div>
 
-    <h1 class="hero-heading" id="h-title" style="margin-bottom:1rem">
+    <h1 class="hero-heading" id="h-title">
       <span class="hero-word"><span class="hero-word-inner">Muhammad</span></span><br/>
       <span class="hero-word"><span class="hero-word-inner">Nabeel</span></span>
       <span class="hero-word"><span class="hero-word-inner">Shah</span></span>
     </h1>
 
-    <div id="h-sub" style="margin-bottom:2.2rem">
-      <p style="font-size:1.05rem;color:var(--muted);font-weight:300;max-width:520px;line-height:1.75">
+    <div id="h-sub">
+      <p class="hero-sub">
         Lead Product Designer crafting intelligent B2B ecosystems and PropTech solutions that turn complex workflows into seamless digital experiences.
       </p>
     </div>
@@ -710,10 +705,10 @@ footer{
 </div>
 
 <!-- ═══════════════════════════ ABOUT ═════════════════════════════ -->
-<section id="about" class="reveal-section" style="padding:7rem 0;position:relative;z-index:1">
+<section id="about" class="reveal-section section-pad">
   <div class="section-wrap">
     <p class="section-label" style="margin-bottom:1rem">About Me</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start;margin-bottom:3rem" class="about-grid">
+    <div class="about-grid">
       <!-- Left: Heading + Description -->
       <div>
         <h2 class="section-heading" style="margin-bottom:2rem">Designing systems<br/>that think ahead</h2>
@@ -726,7 +721,7 @@ footer{
       </div>
 
       <!-- Right: Abstract 3D visual card -->
-      <div style="margin-top:1.5rem;">
+      <div class="about-visual-wrap">
         <div class="about-visual-card" style="position:relative;border-radius:24px;overflow:hidden;height:320px;background:linear-gradient(135deg,#0d0527 0%,#160840 50%,#1f0a55 100%);border:1px solid rgba(139,92,246,.18)">
           <!-- Animated SVG geometry -->
           <svg class="about-svg-anim" style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 480 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -786,7 +781,7 @@ footer{
     <!-- Stats grid below skills -->
     <div style="margin-top:3rem">
       <div class="glass" style="padding:1.2rem 0">
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0">
+        <div class="stats-grid">
           <div class="stat-block"><div class="stat-num" data-count="9" data-suffix="+">9+</div><div class="stat-label">Years Experience</div></div>
           <div class="stat-block"><div class="stat-num" data-count="3" data-suffix="">3</div><div class="stat-label">Core Ecosystems</div></div>
           <div class="stat-block"><div class="stat-num" data-count="50" data-suffix="+">50+</div><div class="stat-label">Modules Designed</div></div>
@@ -812,10 +807,10 @@ footer{
 <div class="gradient-divider"></div>
 
 <!-- ═══════════════════════════ EXPERIENCE ════════════════════════ -->
-<section id="experience" style="padding:7rem 0;position:relative;z-index:1">
+<section id="experience" class="section-pad">
   <div class="section-wrap">
     <p class="section-label" style="margin-bottom:1rem">Experience</p>
-    <h2 class="section-heading" style="margin-bottom:4rem">Career Timeline</h2>
+    <h2 class="section-heading exp-section-heading">Career Timeline</h2>
 
     <div class="timeline-wrap">
       <div class="timeline-line"></div>
@@ -829,7 +824,7 @@ footer{
         </div>
         <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.2rem;color:var(--white);margin-bottom:.3rem">Lead Product Designer (UI/UX)</h3>
         <p style="font-size:.83rem;color:var(--accent);margin-bottom:1.4rem">Appcom Solutions Technologies · Dubai, UAE</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.9rem" class="exp-grid">
+        <div class="exp-grid">
           <div class="glass" style="padding:1.2rem 1.4rem">
             <p class="section-label" style="margin-bottom:.5rem">Core Product</p>
             <p style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.95rem;color:var(--white);margin-bottom:.5rem">Elite Interact</p>
@@ -876,32 +871,17 @@ footer{
 <div class="gradient-divider"></div>
 
 <!-- ═══════════════════════════ PORTFOLIO ════════════════════════ -->
-<section id="portfolio" style="padding:7rem 0;position:relative;z-index:1">
+<section id="portfolio" class="section-pad">
   <div class="section-wrap">
     <p class="section-label" style="margin-bottom:1rem">Selected Work</p>
     <h2 class="section-heading" style="margin-bottom:.8rem">Product Ecosystems</h2>
-    <p style="color:var(--muted);font-size:.88rem;max-width:460px;margin-bottom:3.5rem">End-to-end platforms built to automate real-world operations at scale.</p>
+    <p class="portfolio-intro">End-to-end platforms built to automate real-world operations at scale.</p>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem" class="cards-grid">
+    <div class="cards-grid">
 
       <!-- Elite Interact (wide) -->
-      <div class="project-card" style="height:400px;grid-column:span 2" data-modal="elite">
-        <div class="card-bg" style="background:linear-gradient(135deg,rgba(15,5,41,.85) 0%,rgba(26,5,80,.85) 100%),url('img/project-1-thumb.png');background-size:cover;background-position:center">
-          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.22" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-            <rect x="490" y="40" width="270" height="320" rx="18" fill="none" stroke="rgba(167,139,250,.4)" stroke-width="1.5"/>
-            <rect x="506" y="68" width="238" height="28" rx="6" fill="rgba(139,92,246,.22)"/>
-            <rect x="506" y="110" width="115" height="10" rx="3" fill="rgba(167,139,250,.16)"/>
-            <rect x="506" y="128" width="78" height="7" rx="2" fill="rgba(167,139,250,.1)"/>
-            <rect x="506" y="152" width="238" height="1" fill="rgba(167,139,250,.1)"/>
-            <rect x="506" y="166" width="108" height="66" rx="8" fill="rgba(139,92,246,.15)"/>
-            <rect x="626" y="166" width="118" height="66" rx="8" fill="rgba(109,40,217,.2)"/>
-            <rect x="506" y="248" width="238" height="38" rx="8" fill="rgba(139,92,246,.1)"/>
-            <rect x="506" y="300" width="238" height="38" rx="8" fill="rgba(109,40,217,.08)"/>
-            <circle cx="110" cy="190" r="58" fill="rgba(139,92,246,.05)" stroke="rgba(139,92,246,.18)" stroke-width="1"/>
-            <circle cx="230" cy="155" r="38" fill="rgba(109,40,217,.07)" stroke="rgba(139,92,246,.14)" stroke-width="1"/>
-            <circle cx="318" cy="225" r="48" fill="rgba(167,139,250,.04)" stroke="rgba(167,139,250,.11)" stroke-width="1"/>
-          </svg>
-        </div>
+      <div class="project-card project-card--wide project-card--tall" data-modal="elite">
+        <div class="card-bg" style="background:linear-gradient(160deg,rgba(5,5,9,.35) 0%,rgba(5,5,9,.82) 100%),url('img/eliteinteract.png');background-size:cover;background-position:center"></div>
         <div class="card-overlay"></div>
         <div class="card-content">
           <span class="card-chip">PropTech · ERP · IoT</span>
@@ -912,22 +892,8 @@ footer{
       </div>
 
       <!-- AccyCloud -->
-      <div class="project-card" style="height:400px" data-modal="accy">
-        <div class="card-bg" style="background:linear-gradient(160deg,rgba(7,7,26,.85) 0%,rgba(26,10,64,.85) 100%),url('img/project-2-thumb.png');background-size:cover;background-position:center">
-          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.3" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-            <rect x="30" y="50" width="340" height="190" rx="14" fill="none" stroke="rgba(167,139,250,.3)" stroke-width="1"/>
-            <rect x="48" y="78" width="96" height="9" rx="3" fill="rgba(167,139,250,.2)"/>
-            <rect x="48" y="96" width="58" height="7" rx="2" fill="rgba(167,139,250,.1)"/>
-            <rect x="48" y="122" width="75" height="76" rx="8" fill="rgba(139,92,246,.15)"/>
-            <rect x="136" y="122" width="75" height="76" rx="8" fill="rgba(109,40,217,.2)"/>
-            <rect x="224" y="122" width="114" height="76" rx="8" fill="rgba(139,92,246,.1)"/>
-            <rect x="48" y="270" width="18" height="58" rx="3" fill="rgba(139,92,246,.42)"/>
-            <rect x="76" y="290" width="18" height="38" rx="3" fill="rgba(109,40,217,.38)"/>
-            <rect x="104" y="260" width="18" height="68" rx="3" fill="rgba(167,139,250,.3)"/>
-            <rect x="132" y="280" width="18" height="48" rx="3" fill="rgba(139,92,246,.28)"/>
-            <rect x="160" y="252" width="18" height="76" rx="3" fill="rgba(109,40,217,.42)"/>
-          </svg>
-        </div>
+      <div class="project-card project-card--tall" data-modal="accy">
+        <div class="card-bg" style="background:linear-gradient(160deg,rgba(5,5,9,.35) 0%,rgba(5,5,9,.82) 100%),url('img/accycloud.png');background-size:cover;background-position:center"></div>
         <div class="card-overlay"></div>
         <div class="card-content">
           <span class="card-chip">Accounting · POS · SaaS</span>
@@ -938,17 +904,8 @@ footer{
       </div>
 
       <!-- Swoop -->
-      <div class="project-card" style="height:320px" data-modal="swoop">
-        <div class="card-bg" style="background:linear-gradient(150deg,rgba(8,5,30,.85) 0%,rgba(31,10,90,.85) 100%),url('img/project-3-thumb.png');background-size:cover;background-position:center">
-          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.28" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="200" cy="140" r="88" fill="none" stroke="rgba(139,92,246,.3)" stroke-width="1.5" stroke-dasharray="8 6"/>
-            <circle cx="200" cy="140" r="58" fill="none" stroke="rgba(167,139,250,.2)" stroke-width="1"/>
-            <circle cx="200" cy="140" r="26" fill="rgba(139,92,246,.15)"/>
-            <circle cx="288" cy="140" r="6" fill="rgba(167,139,250,.55)"/>
-            <circle cx="200" cy="52"  r="6" fill="rgba(139,92,246,.55)"/>
-            <circle cx="122" cy="178" r="4" fill="rgba(167,139,250,.35)"/>
-          </svg>
-        </div>
+      <div class="project-card project-card--medium" data-modal="swoop">
+        <div class="card-bg" style="background:linear-gradient(150deg,rgba(5,5,9,.35) 0%,rgba(5,5,9,.82) 100%),url('img/swoopcarwash.png');background-size:cover;background-position:center"></div>
         <div class="card-overlay"></div>
         <div class="card-content">
           <span class="card-chip">Marketplace · Subscription</span>
@@ -959,19 +916,8 @@ footer{
       </div>
 
       <!-- Brand & Web (wide) -->
-      <div class="project-card" style="height:320px;grid-column:span 2" data-modal="brand">
-        <div class="card-bg" style="background:linear-gradient(120deg,rgba(5,5,22,.85) 0%,rgba(22,10,80,.85) 100%),url('img/project-4-thumb.png');background-size:cover;background-position:center">
-          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.2" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-            <line x1="0" y1="107" x2="800" y2="107" stroke="rgba(139,92,246,.16)" stroke-width="1"/>
-            <line x1="0" y1="214" x2="800" y2="214" stroke="rgba(139,92,246,.16)" stroke-width="1"/>
-            <line x1="200" y1="0" x2="200" y2="320" stroke="rgba(139,92,246,.1)" stroke-width="1"/>
-            <line x1="400" y1="0" x2="400" y2="320" stroke="rgba(139,92,246,.1)" stroke-width="1"/>
-            <line x1="600" y1="0" x2="600" y2="320" stroke="rgba(139,92,246,.1)" stroke-width="1"/>
-            <rect x="60" y="38" width="155" height="95" rx="10" fill="rgba(139,92,246,.1)" stroke="rgba(139,92,246,.2)" stroke-width="1"/>
-            <rect x="255" y="55" width="135" height="76" rx="10" fill="rgba(109,40,217,.12)" stroke="rgba(139,92,246,.15)" stroke-width="1"/>
-            <rect x="435" y="28" width="175" height="114" rx="10" fill="rgba(167,139,250,.07)" stroke="rgba(167,139,250,.14)" stroke-width="1"/>
-          </svg>
-        </div>
+      <div class="project-card project-card--wide project-card--medium" data-modal="brand">
+        <div class="card-bg" style="background:linear-gradient(120deg,rgba(5,5,9,.35) 0%,rgba(5,5,9,.82) 100%),url('img/branding.png');background-size:cover;background-position:center"></div>
         <div class="card-overlay"></div>
         <div class="card-content">
           <span class="card-chip">Brand Identity · E-Commerce · Portals</span>
@@ -987,9 +933,9 @@ footer{
 <div class="gradient-divider"></div>
 
 <!-- ═══════════════════════════ EDUCATION ═══════════════════════ -->
-<section id="education" style="padding:7rem 0;position:relative;z-index:1">
+<section id="education" class="section-pad">
   <div class="section-wrap">
-    <div style="display:grid;grid-template-columns:2fr 3fr;gap:5rem;align-items:start" class="edu-grid">
+    <div class="edu-grid">
       <div>
         <p class="section-label" style="margin-bottom:1rem">Education</p>
         <h2 class="section-heading">Credentials &amp;<br/>Certifications</h2>
@@ -1008,12 +954,12 @@ footer{
 <div class="gradient-divider"></div>
 
 <!-- ═══════════════════════════ CONTACT ══════════════════════════ -->
-<section id="contact" style="padding:7rem 0;position:relative;z-index:1">
+<section id="contact" class="section-pad">
   <div class="section-wrap">
     <div style="text-align:center;margin-bottom:3.5rem">
       <p class="section-label" style="margin-bottom:1rem">Contact</p>
       <h2 class="section-heading">Let's build something<br/>extraordinary</h2>
-      <p style="margin-top:1.1rem;color:var(--muted);font-size:.88rem;max-width:380px;margin-left:auto;margin-right:auto">Available for full-time roles and select freelance engagements in the UAE and remotely.</p>
+      <p class="contact-intro">Available for full-time roles and select freelance engagements in the UAE and remotely.</p>
     </div>
     <div style="max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:.7rem">
       <a href="mailto:nabeelshah.2010@gmail.com" class="contact-link">
@@ -1043,7 +989,7 @@ footer{
 
 <!-- ═══════════════════════════ PROJECT MODAL ═══════════════════ -->
 <div id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div id="modal-box">
+  <div id="modal-box" data-lenis-prevent>
     <button class="modal-close" id="modal-close-btn" aria-label="Close modal">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
@@ -1077,28 +1023,7 @@ footer{
   // Tell ScrollTrigger to read scroll position from Lenis
   lenis.on('scroll', ScrollTrigger.update);
 
-  /* ─── 3. Responsive grid (about + edu) ───────────── */
-  function setGrids() {
-    const isMob = window.innerWidth < 768;
-    document.querySelectorAll('.about-grid,.edu-grid').forEach(g => {
-      g.style.gridTemplateColumns = isMob ? '1fr' : '';
-      g.style.gap = isMob ? '2.5rem' : '';
-    });
-    document.querySelectorAll('.exp-grid').forEach(g => {
-      g.style.gridTemplateColumns = isMob ? '1fr' : '';
-    });
-    document.querySelectorAll('.cards-grid').forEach(g => {
-      g.style.gridTemplateColumns = isMob ? '1fr' : 'repeat(3,1fr)';
-    });
-    // On mobile project cards should not span 2 cols
-    document.querySelectorAll('.project-card[style*="grid-column"]').forEach(c => {
-      c.style.gridColumn = isMob ? 'span 1' : '';
-    });
-  }
-  setGrids();
-  window.addEventListener('resize', setGrids);
-
-  /* ─── 4. Custom cursor (fine-pointer devices only) ── */
+  /* ─── 3. Custom cursor (fine-pointer devices only) ── */
   const cursorDot  = document.getElementById('cursor-dot');
   const cursorRing = document.getElementById('cursor-ring');
 
@@ -1310,8 +1235,8 @@ footer{
   ═══════════════════════════════════════════════════ */
   const PROJECTS = {
     elite: {
-      imgFile: 'project-1-info.png',
-      behanceUrl: 'https://www.behance.net/gallery/your-elite-interact-project',
+      imgFile: 'eliteinteract.png',
+      behanceUrl: 'https://www.behance.net/gallery/228780455/Elite-Interact-Smart-Community-App-UIUX-Case-Study',
       chip: 'PropTech · ERP · IoT',
       title: 'Elite Interact',
       subtitle: 'Property Management Ecosystem',
@@ -1327,8 +1252,8 @@ The core workflow automation bridges the gap between resident requests and physi
       skills: ['UI/UX Design','Information Architecture','ERP Dashboard','Workflow Automation','IoT Interface','Design Systems','Figma','User Research','Data Visualization'],
     },
     accy: {
-      imgFile: 'project-2-info.png',
-      behanceUrl: 'https://www.behance.net/gallery/your-accycloud-project',
+      imgFile: 'accycloud.png',
+      behanceUrl: 'https://www.behance.net/gallery/80198289/POS-Invoicing-App-UI-UX-Case-Study',
       chip: 'Accounting · POS · SaaS',
       title: 'AccyCloud',
       subtitle: 'Cloud-based Accounting & POS Platform',
@@ -1344,8 +1269,8 @@ The solution was a context-aware adaptive layout engine — the UI reads device 
       skills: ['UI/UX Design','Adaptive UX','SaaS Design','Data Visualization','Workflow Automation','Figma','Responsive Design','VAT Compliance UX'],
     },
     swoop: {
-      imgFile: 'project-3-info.png',
-      behanceUrl: 'https://www.behance.net/gallery/your-swoop-project',
+      imgFile: 'swoopcarwash.png',
+      behanceUrl: 'https://www.behance.net/gallery/223471705/Swoop-Car-Wash-App-UI-UX-Design-Journey',
       chip: 'Marketplace · Subscription',
       title: 'Swoop Car Wash',
       subtitle: 'Subscription-based Service Marketplace',
@@ -1361,8 +1286,8 @@ Residents needed a frictionless subscription flow with clear plan customization 
       skills: ['UI/UX Design','Subscription UX','Multi-platform Design','Figma','Sketch','Operational Workflow','Data Visualization','Mobile-first Design'],
     },
     brand: {
-      imgFile: 'project-4-info.png',
-      behanceUrl: 'https://www.behance.net/gallery/your-brand-projects',
+      imgFile: 'branding.png',
+      behanceUrl: '',
       chip: 'Brand Identity · E-Commerce · Portals',
       title: 'Brand & Web Design',
       subtitle: 'Identity Systems & Responsive Web',
@@ -1401,7 +1326,16 @@ Each project required a full-stack design approach: visual identity (logos, colo
     const skillsHTML = p.skills.map(s =>
       `<span class="modal-skill-tag">${s}</span>`).join('');
 
+    const behanceHTML = p.behanceUrl ? `
+      <div class="modal-actions">
+        <a href="${p.behanceUrl}" class="btn-primary" target="_blank" rel="noopener noreferrer">
+          View on Behance
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </a>
+      </div>` : '';
+
     return `
+      <img class="modal-hero-img" src="img/${p.imgFile}" alt="${p.title} — ${p.subtitle}" loading="lazy"/>
       <div style="margin-bottom:1.5rem">
         <span class="modal-chip">${p.chip}</span>
       </div>
@@ -1421,6 +1355,7 @@ Each project required a full-stack design approach: visual identity (logos, colo
       <!-- Skills -->
       <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);opacity:.8;margin-bottom:.8rem">Skills &amp; Tools</p>
       <div style="display:flex;flex-wrap:wrap">${skillsHTML}</div>
+      ${behanceHTML}
     `;
   }
 
@@ -1433,7 +1368,7 @@ Each project required a full-stack design approach: visual identity (logos, colo
 
     // Ensure cursor hover works for new modal elements
     if (window.matchMedia('(pointer:fine)').matches) {
-      modalBox.querySelectorAll('button,.modal-skill-tag').forEach(el => {
+      modalBox.querySelectorAll('button,a.btn-primary,.modal-skill-tag').forEach(el => {
         el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
         el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
       });
@@ -1479,5 +1414,6 @@ Each project required a full-stack design approach: visual identity (logos, colo
 
 })();
 </script>
+<script src="main.js" defer></script>
 </body>
 </html>
